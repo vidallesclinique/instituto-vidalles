@@ -1,0 +1,24 @@
+workflows:
+  react-native-expo:
+    name: Build Expo App (Android)
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    environment:
+      vars:
+        EXPO_TOKEN: $EXPO_TOKEN
+      node: 18
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm install -g expo-cli
+          npm install
+      - name: Build Android APK
+        script: |
+          npx expo prebuild
+          npx expo build:android -t apk
+    artifacts:
+      - android/app/build/outputs/**/*.apk
+    publishing:
+      email:
+        recipients:
+          - $EMAIL
