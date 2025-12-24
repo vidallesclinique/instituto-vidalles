@@ -5,7 +5,7 @@ workflows:
     max_build_duration: 60
     environment:
       vars:
-        EXPO_TOKEN: $EXPO_TOKEN
+        EXPO_TOKEN: MJUekhJO19A7o4UHmGzu7CttzmR1U8q6TGiq_QeK
         NODE_OPTIONS: "--max-old-space-size=4096"
       node: 18
     scripts:
@@ -17,8 +17,9 @@ workflows:
         script: |
           npx expo prebuild
           npx eas build -p android --profile preview --non-interactive
-      - name: Build iOS app
+      - name: Build iOS App
         script: |
+          npx expo prebuild
           npx eas build -p ios --profile preview --non-interactive
     artifacts:
       - build/**/*.apk
