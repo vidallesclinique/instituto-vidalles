@@ -1,24 +1,30 @@
 workflows:
   react-native-expo:
-    name: Build Expo App (Android)
+    name: Build Expo App (Android + iOS)
     instance_type: mac_mini_m2
     max_build_duration: 60
     environment:
       vars:
         EXPO_TOKEN: $EXPO_TOKEN
+        NODE_OPTIONS: "--max-old-space-size=4096"
       node: 18
     scripts:
       - name: Install dependencies
         script: |
-          npm install -g expo-cli
+          npm install -g expo-cli eas-cli
           npm install
       - name: Build Android APK
         script: |
           npx expo prebuild
-          npx expo build:android -t apk
+          npx eas build -p android --profile preview --non-interactive
+      - name: Build iOS app
+        script: |
+          npx eas build -p ios --profile preview --non-interactive
     artifacts:
-      - android/app/build/outputs/**/*.apk
+      - build/**/*.apk
+      - build/**/*.aab
+      - build/**/*.ipa
     publishing:
       email:
         recipients:
-          - $EMAIL
+          - "vidallesclinique@gmail.com"
